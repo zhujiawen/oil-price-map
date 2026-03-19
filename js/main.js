@@ -33,14 +33,11 @@ class OilPriceMap {
           backgroundColor: 'rgba(255, 255, 255, 0.98)',
           borderColor: '#f39c12',
           borderWidth: 1,
-          textStyle: {
-            color: '#333',
-            fontSize: 13
-          },
-          padding: [12, 16],
+          padding: 0,
+          extraCssText: 'box-shadow: 0 4px 20px rgba(0,0,0,0.3); border-radius: 8px;',
           formatter: (params) => {
             const provinceData = this.dataLoader.getProvinceData(params.name);
-            return this.dataLoader.getTooltipContent(provinceData);
+            return this.formatTooltip(provinceData);
           }
         },
         
@@ -66,7 +63,6 @@ class OilPriceMap {
           }
         },
         
-        // 添加标题
         title: {
           text: '',
           show: false
@@ -93,6 +89,70 @@ class OilPriceMap {
       console.error('初始化失败:', error);
       this.showError('加载失败：' + error.message);
     }
+  }
+
+  /**
+   * 格式化悬浮提示
+   */
+  formatTooltip(provinceData) {
+    if (!provinceData || !provinceData.prices) {
+      return '暂无数据';
+    }
+
+    const { name, prices, history } = provinceData;
+    const p = prices;
+
+    // 构建价格行
+    let content = `
+      <div style="padding:12px 16px 8px; border-bottom:2px solid #f39c12;">
+        <div style="font-size:15px; font-weight:600; color:#1a1a2e;">📍 ${name}</div>
+      </div>
+      <div style="padding:10px 16px;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+          <tr>
+            <td style="padding:6px 0; color:#666;">92#</td>
+            <td style="padding:6px 0; color:#3498db; font-weight:600; text-align:right;">¥${p['92']?.toFixed(2) || '-'}</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0; color:#666;">95#</td>
+            <td style="padding:6px 0; color:#e74c3c; font-weight:600; text-align:right;">¥${p['95']?.toFixed(2) || '-'}</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0; color:#666;">98#</td>
+            <td style="padding:6px 0; color:#9b59b6; font-weight:600; text-align:right;">¥${p['98']?.toFixed(2) || '-'}</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 0; color:#666;">0#</td>
+            <td style="padding:6px 0; color:#27ae60; font-weight:600; text-align:right;">¥${p['0']?.toFixed(2) || '-'}</td>
+          </tr>
+        </table>
+      </div>
+    `;
+
+    // 添加历史调价
+    if (history && history.length > 0) {
+      content += `
+        <div style="padding:8px 16px 12px; border-top:1px dashed #ddd; margin:0 16px;">
+          <div style="font-size:11px; color:#888; margin-bottom:6px;">📅 近 5 次调价</div>
+      `;
+      
+      history.forEach(h => {
+        const changeClass = h.change > 0 ? '#e74c3c' : (h.change < 0 ? '#27ae60' : '#95a5a6');
+        const changeIcon = h.change > 0 ? '↑' : (h.change < 0 ? '↓' : '→');
+        const changeText = h.change > 0 ? `+${h.change.toFixed(2)}` : h.change.toFixed(2);
+        
+        content += `
+          <div style="display:flex; justify-content:space-between; font-size:11px; color:#555; padding:3px 0;">
+            <span>${h.date}</span>
+            <span style="color:${changeClass}; font-weight:500;">${changeIcon} ${changeText}</span>
+          </div>
+        `;
+      });
+      
+      content += `</div>`;
+    }
+
+    return content;
   }
 
   /**
