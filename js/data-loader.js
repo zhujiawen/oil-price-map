@@ -32,7 +32,19 @@ class OilPriceDataLoader {
    */
   getProvinceData(provinceName) {
     if (!this.data) return null;
-    return this.data.provinces.find(p => p.name === provinceName);
+    
+    // 直接匹配
+    let result = this.data.provinces.find(p => p.name === provinceName);
+    if (result) return result;
+    
+    // 尝试去掉"省"、"自治区"、"市"等后缀匹配
+    const normalizedName = provinceName.replace(/(省 | 自治区 | 市)$/, '');
+    result = this.data.provinces.find(p => {
+      const pName = p.name.replace(/(省 | 自治区 | 市)$/, '');
+      return pName === normalizedName;
+    });
+    
+    return result;
   }
 
   /**

@@ -30,13 +30,18 @@ class OilPriceMap {
       const option = {
         tooltip: {
           trigger: 'item',
-          backgroundColor: 'rgba(255, 255, 255, 0.98)',
+          backgroundColor: '#fff',
           borderColor: '#f39c12',
           borderWidth: 1,
-          padding: 0,
-          extraCssText: 'box-shadow: 0 4px 20px rgba(0,0,0,0.3); border-radius: 8px;',
+          textStyle: {
+            color: '#333',
+            fontSize: 13
+          },
+          padding: 10,
           formatter: (params) => {
+            console.log('Tooltip params:', params);
             const provinceData = this.dataLoader.getProvinceData(params.name);
+            console.log('Province data:', provinceData);
             return this.formatTooltip(provinceData);
           }
         },
