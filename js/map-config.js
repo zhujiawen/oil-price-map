@@ -67,19 +67,24 @@ const MapConfig = {
     left: '30',
     bottom: '30',
     pieces: [
-      { min: 8.10, label: '高油价 (≥¥8.10)', color: '#C23531' },
-      { min: 7.95, max: 8.10, label: '较高油价 (¥7.95-8.10)', color: '#EE6666' },
-      { min: 7.85, max: 7.95, label: '中等油价 (¥7.85-7.95)', color: '#FAC858' },
-      { min: 7.80, max: 7.85, label: '较低油价 (¥7.80-7.85)', color: '#91CC75' },
-      { max: 7.80, label: '低油价 (≤¥7.80)', color: '#2ECC71' }
+      { min: 8.10, label: '≥¥8.10', color: '#C23531' },
+      { min: 7.95, max: 8.10, label: '¥7.95-8.10', color: '#EE6666' },
+      { min: 7.85, max: 7.95, label: '¥7.85-7.95', color: '#FAC858' },
+      { min: 7.80, max: 7.85, label: '¥7.80-7.85', color: '#91CC75' },
+      { max: 7.80, label: '≤¥7.80', color: '#2ECC71' }
     ],
     textStyle: {
-      color: '#fff',
-      fontSize: 11
+      color: '#333',
+      fontSize: 12
     },
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    padding: 10,
-    borderRadius: 8
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderColor: '#ddd',
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 6,
+    itemWidth: 20,
+    itemHeight: 14,
+    gap: 8
   },
 
   // 工具栏配置

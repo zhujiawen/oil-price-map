@@ -29,7 +29,15 @@ class OilPriceMap {
       // 配置地图选项
       const option = {
         tooltip: {
-          ...MapConfig.tooltip,
+          trigger: 'item',
+          backgroundColor: 'rgba(255, 255, 255, 0.98)',
+          borderColor: '#f39c12',
+          borderWidth: 1,
+          textStyle: {
+            color: '#333',
+            fontSize: 13
+          },
+          padding: [12, 16],
           formatter: (params) => {
             const provinceData = this.dataLoader.getProvinceData(params.name);
             return this.dataLoader.getTooltipContent(provinceData);
